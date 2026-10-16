@@ -15,8 +15,11 @@ public class ProfessoresServices : IProfessoresServices
     public ProfessoresBuscaResponseDTO buscarProfessores(ProfessoresBuscaRequestDTO request)
     {
         // Mapeia os filtros
-
-
+        var professores = _repository.findAll();
+        foreach(Professor professor in professores)
+        {
+            Console.WriteLine(professor);
+        }
         // Retornar o resposne dto
         return new();
     }
