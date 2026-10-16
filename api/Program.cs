@@ -10,8 +10,8 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
 
-builder.Services.AddSingleton<IProfessorRepository>();
-builder.Services.AddScoped<IProfessorServices>();
+builder.Services.AddSingleton<IProfessoresRepository>();
+builder.Services.AddScoped<IProfessoresServices>();
 
 
 
