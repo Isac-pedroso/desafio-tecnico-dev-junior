@@ -1,4 +1,7 @@
+using api.Data;
 using api.Interfaces;
+using api.Repositories;
+using api.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -9,13 +12,18 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
+builder.Services.AddSingleton<ProfessoresStore>();
+builder.Services.AddSingleton<ProfessoresInitializer>();
 
-builder.Services.AddSingleton<IProfessoresRepository>();
-builder.Services.AddScoped<IProfessoresServices>();
+builder.Services.AddSingleton<IProfessoresRepository, ProfessoresRepository>();
+builder.Services.AddScoped<IProfessoresServices, ProfessoresServices>();
 
 
 
 var app = builder.Build();
+
+var initializer = app.Services.GetRequiredService<ProfessoresInitializer>();
+initializer.inicializar();
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
