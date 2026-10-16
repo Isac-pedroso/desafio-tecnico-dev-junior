@@ -5,14 +5,14 @@ namespace api.DTOs.professores;
 
 public class ProfessoresBuscaRequestDTO
 {
-    [Required]
+    [Required(ErrorMessage = "Informe o idioma.")]
     public string idioma { get; set; } = string.Empty;
-    [Required]
+    [Required(ErrorMessage = "Informe pelo menos um dia.")]
     [MinLength(1)]
     public List<string> dias { get; set; } = new();
     public TimeOnly inicioFaixa { get; set; }
 
     public TimeOnly fimFaixa { get; set; }
-    [Range(1, 480)]
+    [Range(1, 480, ErrorMessage = "A duração deve estar entre 1 e 480 minutos.")]
     public int duracaoMinutos { get; set; }
 }

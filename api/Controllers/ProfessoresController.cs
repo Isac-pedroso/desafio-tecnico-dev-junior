@@ -21,7 +21,7 @@ public class ProfessoresController : ControllerBase{
             var professores = _service.buscarProfessores(requestDTO);
             return Ok(professores);
         }catch(ArgumentException e){
-            return BadRequest(new {msg = e.Message});
+            return BadRequest(new {mensagem = e.Message});
         }
     }
 }

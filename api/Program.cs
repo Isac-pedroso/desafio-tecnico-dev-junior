@@ -1,3 +1,4 @@
+
 using api.Converters;
 using api.Data;
 using api.Interfaces;
@@ -16,7 +17,7 @@ builder.Services.AddControllers()
             new TimeOnlyJsonConverter()
         );
     });
-    
+
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
