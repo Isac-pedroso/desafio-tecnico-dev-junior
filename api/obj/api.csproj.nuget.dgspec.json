@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\Vinicius - Webbrain\\Documents\\projetos pessoais\\desafio-tecnico-dev-junior\\api\\api.csproj": {}
+    "c:\\Users\\Vinicius - Webbrain\\Documents\\projetos pessoais\\desafio-tecnico-dev-junior\\api\\api.csproj": {}
   },
   "projects": {
-    "C:\\Users\\Vinicius - Webbrain\\Documents\\projetos pessoais\\desafio-tecnico-dev-junior\\api\\api.csproj": {
+    "c:\\Users\\Vinicius - Webbrain\\Documents\\projetos pessoais\\desafio-tecnico-dev-junior\\api\\api.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\Vinicius - Webbrain\\Documents\\projetos pessoais\\desafio-tecnico-dev-junior\\api\\api.csproj",
+        "projectUniqueName": "c:\\Users\\Vinicius - Webbrain\\Documents\\projetos pessoais\\desafio-tecnico-dev-junior\\api\\api.csproj",
         "projectName": "api",
-        "projectPath": "C:\\Users\\Vinicius - Webbrain\\Documents\\projetos pessoais\\desafio-tecnico-dev-junior\\api\\api.csproj",
+        "projectPath": "c:\\Users\\Vinicius - Webbrain\\Documents\\projetos pessoais\\desafio-tecnico-dev-junior\\api\\api.csproj",
         "packagesPath": "C:\\Users\\Vinicius - Webbrain\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\Vinicius - Webbrain\\Documents\\projetos pessoais\\desafio-tecnico-dev-junior\\api\\obj\\",
+        "outputPath": "c:\\Users\\Vinicius - Webbrain\\Documents\\projetos pessoais\\desafio-tecnico-dev-junior\\api\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "C:\\Users\\Vinicius - Webbrain\\AppData\\Roaming\\NuGet\\NuGet.Config"
