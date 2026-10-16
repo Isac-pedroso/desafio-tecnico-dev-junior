@@ -14,7 +14,7 @@ public class ProfessoresController : ControllerBase{
         _service = service;
     }
 
-    [HttpGet("busca")]
+    [HttpPost("busca")]
     public ActionResult<ProfessoresBuscaResponseDTO> buscarProfessores([FromBody] ProfessoresBuscaRequestDTO requestDTO)
     {
         try{
