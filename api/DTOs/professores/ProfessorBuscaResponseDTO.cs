@@ -12,5 +12,4 @@ public class ProfessorBuscaResponseDTO
     public int aulasNaSemana { get; set; }
 
     public List<TimeOnly> horarios {get; set;} = new();
-
 }
