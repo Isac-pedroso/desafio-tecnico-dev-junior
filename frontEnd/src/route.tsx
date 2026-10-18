@@ -2,7 +2,7 @@ import { Route, Routes } from "react-router-dom";
 import PrivateRoute from "./routes/PrivateRoute";
 import PublicRoute from "./routes/PublicRoute";
 import LayoutSelector from "./components/layout/LayoutSelector";
-import { BuscarProfessor } from "./pages/buscarProfessor";
+import BuscarProfessor from "./pages/buscarProfessor";
 
 
 export default function AppRoutes() {
