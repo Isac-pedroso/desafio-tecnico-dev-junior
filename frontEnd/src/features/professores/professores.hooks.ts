@@ -6,8 +6,8 @@ import { isAxiosError } from "axios";
 
 
 export function useBuscarProfessores() {
-    const {showLoading, hideLoading, setErrorLoading, setSuccessLoading} = useLoading();
-    
+    const { showLoading, hideLoading, setErrorLoading, setSuccessLoading, setMsgLoading } = useLoading();
+
     return useMutation<BuscarProfessorResponse, Error, BuscarProfessorForm>({
         mutationFn: ProfessoresServices.buscarProfessores,
         onMutate: () => {
@@ -17,15 +17,21 @@ export function useBuscarProfessores() {
 
             let msg = error?.message;
 
-            if(isAxiosError(error)){
+            if (isAxiosError(error)) {
                 const data = error?.response?.data;
-                msg = typeof data === "string" ?data: data.message ?? data.title ?? error.message;
+                msg = typeof data === "string" ? data : data.message ?? data.title ?? error.message;
             }
             setErrorLoading(error?.message || "Ocorreu um problema ao buscar os professores.");
         },
         onSuccess: () => {
             setSuccessLoading("Busca concluida com sucesso.");
         },
-        onSettled: (_data, error) => hideLoading(error ? 2000 : 800)
+        onSettled: (_data, error) => {
+            const qtdProfessores = _data?.professores.length;
+            if(!qtdProfessores){
+                setMsgLoading("Nenhum professor encontrado")
+            }
+            hideLoading(error ? 2000 : qtdProfessores ? 800 : 2000);
+        }
     })
 }
