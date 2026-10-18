@@ -450,3 +450,19 @@
     min-width: 600px;
   }
 }
+
+.buscar-motivos-lista {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  margin: 0;
+  padding-left: 18px;
+
+  color: var(--color-text-secondary);
+  font-size: 13px;
+  line-height: 1.5;
+}
+
+.buscar-motivos-lista li::marker {
+  color: var(--color-error);
+}

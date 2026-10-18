@@ -17,7 +17,7 @@ export type ProfessorElegivel = {
 export type ProfessorNaoElegivel = {
   id: number;
   nome: string;
-  motivo: string;
+  motivo: string[];
 };
 
 export type BuscarProfessorResponse = {

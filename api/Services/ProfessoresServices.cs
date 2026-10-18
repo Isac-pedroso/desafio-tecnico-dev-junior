@@ -1,3 +1,4 @@
+using System.Collections;
 using api.DTOs.professores;
 using api.Entities;
 using api.Interfaces;
@@ -25,35 +26,38 @@ public class ProfessoresServices : IProfessoresServices
 
         foreach (Professor p in professores)
         {
-            string motivo = null;
+            List<string> motivos = new List<string>();
+
+
+            if (!p.Idiomas.Any(i =>
+                i.Equals(
+                    request.idioma.Trim(),
+                    StringComparison.OrdinalIgnoreCase)))
+            {
+                motivos.Add("Não ensina o idioma.");
+            }
 
             if (p.AgendaBloqueada)
             {
-                motivo = "Agenda bloqueada.";
-            }
-            else if (!p.Idiomas.Any(i =>
-                i.Equals(request.idioma.Trim(), StringComparison.OrdinalIgnoreCase)
-            ))
-            {
-                motivo = "Não leciona o idioma solicitado.";
-
-            }
-            else if (!p.Disponibilidade.Any(d =>
-            request.dias.Any(dia =>
-                dia.Trim().Equals(
-                    d.Dia,
-                    StringComparison.OrdinalIgnoreCase))))
-            {
-                motivo = "Não possui disponibilidade nos dias solicitados.";
+                motivos.Add("Agenda bloqueada.");
             }
 
-            if (motivo != null)
+            if (!p.Disponibilidade.Any(d =>
+                request.dias.Any(dia =>
+                    dia.Trim().Equals(
+                        d.Dia,
+                        StringComparison.OrdinalIgnoreCase))))
+            {
+                motivos.Add("Sem disponibilidade nos dias solicitados.");
+            }
+
+            if (motivos.Count != 0)
             {
                 naoElegiveis.Add(new ProfessorNaoElegiveisBuscaResponseDTO
                 {
                     id = p.id,
                     nome = p.nome,
-                    motivo = motivo,
+                    motivo = motivos
                 });
                 continue;
             }
@@ -76,13 +80,12 @@ public class ProfessoresServices : IProfessoresServices
                 {
                     id = p.id,
                     nome = p.nome,
-                    motivo = "Não possui horário livre para a duração solicitada."
+                    motivo = ["Sem horário em comum nos dias pedidos."]
                 });
 
                 continue;
             }
 
-            // 6. Adiciona professor elegível
             elegiveis.Add(new ProfessorBuscaResponseDTO
             {
                 id = p.id,
@@ -93,7 +96,6 @@ public class ProfessoresServices : IProfessoresServices
         }
 
         return new ProfessoresBuscaResponseDTO(elegiveis, naoElegiveis);
-
     }
 
     private static void validarFiltros(ProfessoresBuscaRequestDTO request)

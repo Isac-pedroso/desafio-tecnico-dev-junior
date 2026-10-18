@@ -44,7 +44,11 @@ export default function TabelaProfessoresNaoElegiveis({ data }: Props) {
                 </td>
 
                 <td className="buscar-motivo">
-                  {professor.motivo}
+                  {professor.motivo.map((motivo, index) => (
+                    <span key={index} className="buscar-status nao-elegivel">
+                      {motivo}
+                    </span>
+                  ))}
                 </td>
 
                 <td>
