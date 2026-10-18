@@ -401,7 +401,11 @@
   text-align: center;
   padding: 30px !important;
 }
-
+@media (max-width: 640px) {
+  .buscar-form-footer .app-button {
+    width: 100%;
+  }
+}
 @media (max-width: 640px) {
   .buscar-page {
     padding: 24px 14px 48px;
@@ -428,6 +432,10 @@
   .buscar-form-footer {
     flex-direction: column;
     align-items: stretch;
+  }
+
+  .buscar-form-footer .app-button {
+    width: 100%;
   }
 
   .buscar-submit {

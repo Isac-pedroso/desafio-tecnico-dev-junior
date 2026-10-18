@@ -6,6 +6,11 @@ import type {
 } from "../../features/professores/professores.types";
 import "./style.css";
 import { ProfessoresServices } from "../../features/professores/professores.services";
+import SelectOption from "../../components/ui/SelectOption";
+import Button from "../../components/ui/Button";
+import TabelaProfessoresElegiveis from "../../components/TabelaProfessoresElegiveis";
+import TabelaProfessoresNaoElegiveis from "../../components/TabelaProfessoresNaoElegiveis";
+import Input from "../../components/ui/input";
 
 const diasSemana = [
   { label: "Seg", value: "segunda" },
@@ -41,6 +46,20 @@ const dadosExemplo: BuscarProfessorResponse = {
     { id: 8, nome: "Heitor", motivo: "Não leciona o idioma solicitado." },
   ],
 };
+
+const idiomas = [
+  { label: "Inglês", value: "Inglês" },
+  { label: "Espanhol", value: "Espanhol" },
+  { label: "Francês", value: "Francês" },
+];
+
+const duracoes = [
+  { label: "30 minutos", value: 30 },
+  { label: "45 minutos", value: 45 },
+  { label: "60 minutos", value: 60 },
+  { label: "90 minutos", value: 90 },
+  { label: "120 minutos", value: 120 },
+];
 
 export default function BuscarProfessor() {
   const [resultado, setResultado] =
@@ -99,34 +118,36 @@ export default function BuscarProfessor() {
           <form onSubmit={handleSubmit(handleSalvar)}>
             <div className="buscar-form-grid">
               <div className="buscar-field">
-                <label htmlFor="idioma">Idioma desejado</label>
-                <select id="idioma" {...register("idioma", {
-                  required: "Selecione um idioma.",
-                })}>
-                  <option value="Inglês">Inglês</option>
-                  <option value="Espanhol">Espanhol</option>
-                  <option value="Francês">Francês</option>
-                </select>
+                <SelectOption
+                  label="Idioma desejado"
+                  data={idiomas}
+                  {...register("idioma", {
+                    required: "Selecione um idioma.",
+                  })}
+                />
+
                 {errors.idioma && (
-                  <span className="buscar-error">{errors.idioma.message}</span>
+                  <span className="buscar-error">
+                    {errors.idioma.message}
+                  </span>
                 )}
               </div>
 
               <div className="buscar-field">
-                <label htmlFor="duracaoMinutos">Duração da aula</label>
-                <select
-                  id="duracaoMinutos"
+                <SelectOption
+                  label="Duração da aula"
+                  data={duracoes}
                   {...register("duracaoMinutos", {
-                    valueAsNumber: true,
                     required: "Selecione uma duração.",
+                    valueAsNumber: true,
                   })}
-                >
-                  <option value={30}>30 minutos</option>
-                  <option value={45}>45 minutos</option>
-                  <option value={60}>60 minutos</option>
-                  <option value={90}>90 minutos</option>
-                  <option value={120}>120 minutos</option>
-                </select>
+                />
+
+                {errors.duracaoMinutos && (
+                  <span className="buscar-error">
+                    {errors.duracaoMinutos.message}
+                  </span>
+                )}
               </div>
 
               <div className="buscar-field buscar-field-full">
@@ -148,9 +169,8 @@ export default function BuscarProfessor() {
                             key={dia.value}
                             type="button"
                             aria-pressed={selecionado}
-                            className={`buscar-dia ${
-                              selecionado ? "ativo" : ""
-                            }`}
+                            className={`buscar-dia ${selecionado ? "ativo" : ""
+                              }`}
                             onClick={() => {
                               field.onChange(
                                 selecionado
@@ -172,26 +192,21 @@ export default function BuscarProfessor() {
               </div>
 
               <div className="buscar-field">
-                <label htmlFor="inicioFaixa">Horário inicial</label>
-                <input
-                  id="inicioFaixa"
+                <Input
+                  label="Horário inicial"
                   type="time"
+                  erro={errors.inicioFaixa?.message}
                   {...register("inicioFaixa", {
                     required: "Informe o horário inicial.",
                   })}
                 />
-                {errors.inicioFaixa && (
-                  <span className="buscar-error">
-                    {errors.inicioFaixa.message}
-                  </span>
-                )}
               </div>
 
               <div className="buscar-field">
-                <label htmlFor="fimFaixa">Horário final</label>
-                <input
-                  id="fimFaixa"
+                <Input
+                  label="Horário final"
                   type="time"
+                  erro={errors.fimFaixa?.message}
                   {...register("fimFaixa", {
                     required: "Informe o horário final.",
                     validate: (value) =>
@@ -199,20 +214,21 @@ export default function BuscarProfessor() {
                       "O horário final deve ser maior que o inicial.",
                   })}
                 />
-                {errors.fimFaixa && (
-                  <span className="buscar-error">{errors.fimFaixa.message}</span>
-                )}
               </div>
             </div>
 
             <div className="buscar-form-footer">
               <span>Todos os campos são obrigatórios.</span>
-              <button type="submit" className="buscar-submit">
-                Buscar professores <span aria-hidden="true">→</span>
-              </button>
+              <Button
+                texto="Buscar professores"
+                classe="primary"
+                icone="→"
+                type="submit"
+              />
             </div>
           </form>
         </section>
+
 
         <section className="buscar-results">
           <div className="buscar-results-heading">
@@ -220,6 +236,7 @@ export default function BuscarProfessor() {
               <h2>Resultados da busca</h2>
               <p>Confira a disponibilidade dos professores.</p>
             </div>
+
             {resultado && (
               <span className="buscar-results-count">
                 {resultado.professores.length} disponíveis
@@ -230,127 +247,27 @@ export default function BuscarProfessor() {
           {!resultado ? (
             <div className="buscar-empty">
               <div className="buscar-empty-icon">⌕</div>
+
               <h3>Sua busca começa aqui</h3>
+
               <p>
-                Preencha os filtros acima e clique em buscar para
-                visualizar os professores.
+                Preencha os filtros acima e clique em buscar
+                para visualizar os professores.
               </p>
             </div>
           ) : (
             <>
-              <div className="buscar-table-card">
-                <div className="buscar-table-heading">
-                  <span className="buscar-dot success" />
-                  <h3>Professores elegíveis</h3>
-                  <span className="buscar-counter">
-                    {resultado.professores.length}
-                  </span>
-                </div>
+              <TabelaProfessoresElegiveis
+                data={resultado.professores}
+              />
 
-                <div className="buscar-table-scroll">
-                  <table className="buscar-table">
-                    <thead>
-                      <tr>
-                        <th>Professor</th>
-                        <th>Aulas na semana</th>
-                        <th>Horários disponíveis</th>
-                        <th>Status</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      {resultado.professores.map((professor) => (
-                        <tr key={professor.id}>
-                          <td>
-                            <div className="buscar-professor">
-                              <span className="buscar-avatar">
-                                {professor.nome.charAt(0)}
-                              </span>
-                              <strong>{professor.nome}</strong>
-                            </div>
-                          </td>
-                          <td>{professor.aulasNaSemana}</td>
-                          <td>
-                            <div className="buscar-horarios">
-                              {professor.horarios.map((horario) => (
-                                <span
-                                  key={horario}
-                                  className="buscar-horario"
-                                >
-                                  {horario}
-                                </span>
-                              ))}
-                            </div>
-                          </td>
-                          <td>
-                            <span className="buscar-status elegivel">
-                              Elegível
-                            </span>
-                          </td>
-                        </tr>
-                      ))}
-                      {resultado.professores.length === 0 && (
-                        <tr>
-                          <td colSpan={4} className="buscar-table-empty">
-                            Nenhum professor disponível para esses filtros.
-                          </td>
-                        </tr>
-                      )}
-                    </tbody>
-                  </table>
-                </div>
-              </div>
-
-              <div className="buscar-table-card">
-                <div className="buscar-table-heading">
-                  <span className="buscar-dot muted" />
-                  <h3>Professores não elegíveis</h3>
-                  <span className="buscar-counter">
-                    {resultado.naoElegiveis.length}
-                  </span>
-                </div>
-
-                <div className="buscar-table-scroll">
-                  <table className="buscar-table">
-                    <thead>
-                      <tr>
-                        <th>Professor</th>
-                        <th>Motivo</th>
-                        <th>Status</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      {resultado.naoElegiveis.map((professor) => (
-                        <tr key={professor.id}>
-                          <td>
-                            <div className="buscar-professor">
-                              <span className="buscar-avatar muted">
-                                {professor.nome.charAt(0)}
-                              </span>
-                              <strong>{professor.nome}</strong>
-                            </div>
-                          </td>
-                          <td className="buscar-motivo">{professor.motivo}</td>
-                          <td>
-                            <span className="buscar-status nao-elegivel">
-                              Não elegível
-                            </span>
-                          </td>
-                        </tr>
-                      ))}
-                      {resultado.naoElegiveis.length === 0 && (
-                        <tr>
-                          <td colSpan={3} className="buscar-table-empty">
-                            Nenhum professor não elegível.
-                          </td>
-                        </tr>
-                      )}
-                    </tbody>
-                  </table>
-                </div>
-              </div>
+              <TabelaProfessoresNaoElegiveis
+                data={resultado.naoElegiveis}
+              />
             </>
           )}
         </section>
+
       </div>
     </main>
   );
