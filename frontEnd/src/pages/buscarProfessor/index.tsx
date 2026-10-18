@@ -11,6 +11,7 @@ import Button from "../../components/ui/Button";
 import TabelaProfessoresElegiveis from "../../components/TabelaProfessoresElegiveis";
 import TabelaProfessoresNaoElegiveis from "../../components/TabelaProfessoresNaoElegiveis";
 import Input from "../../components/ui/input";
+import { useBuscarProfessores } from "../../features/professores/professores.hooks";
 
 const diasSemana = [
   { label: "Seg", value: "segunda" },
@@ -21,31 +22,6 @@ const diasSemana = [
   { label: "Sáb", value: "sabado" },
   { label: "Dom", value: "domingo" },
 ];
-
-const dadosExemplo: BuscarProfessorResponse = {
-  professores: [
-    {
-      id: 1,
-      nome: "Ana",
-      aulasNaSemana: 1,
-      horarios: ["18:00"],
-    },
-    {
-      id: 4,
-      nome: "Diego",
-      aulasNaSemana: 1,
-      horarios: ["18:00", "18:15", "18:30", "18:45", "19:00"],
-    },
-  ],
-  naoElegiveis: [
-    { id: 2, nome: "Bruno", motivo: "Não leciona o idioma solicitado." },
-    { id: 3, nome: "Carla", motivo: "Agenda bloqueada." },
-    { id: 5, nome: "Elisa", motivo: "Não leciona o idioma solicitado." },
-    { id: 6, nome: "Fábio", motivo: "Não leciona o idioma solicitado." },
-    { id: 7, nome: "Gabriela", motivo: "Não leciona o idioma solicitado." },
-    { id: 8, nome: "Heitor", motivo: "Não leciona o idioma solicitado." },
-  ],
-};
 
 const idiomas = [
   { label: "Inglês", value: "Inglês" },
@@ -64,6 +40,7 @@ const duracoes = [
 export default function BuscarProfessor() {
   const [resultado, setResultado] =
     useState<BuscarProfessorResponse | null>(null);
+  const { mutateAsync: buscarProfessores } = useBuscarProfessores();
 
   const {
     register,
@@ -83,12 +60,14 @@ export default function BuscarProfessor() {
 
   const inicioFaixa = watch("inicioFaixa");
 
-  function handleSalvar(data: BuscarProfessorForm) {
-    console.log("Body da busca:", data);
+  async function handleBuscar(data: BuscarProfessorForm) {
+    try {
+      const response = await buscarProfessores(data);
 
-    ProfessoresServices.buscarProfessores(data);
-    // Simulação do retorno da API
-    setResultado(dadosExemplo);
+      setResultado(response);
+    } catch (error) {
+      console.log("Error busca: ", error);
+    }
   }
 
   return (
@@ -115,7 +94,7 @@ export default function BuscarProfessor() {
             <span className="buscar-step">01 / Busca</span>
           </div>
 
-          <form onSubmit={handleSubmit(handleSalvar)}>
+          <form onSubmit={handleSubmit(handleBuscar)}>
             <div className="buscar-form-grid">
               <div className="buscar-field">
                 <SelectOption
